@@ -102,11 +102,13 @@ export default function undom() {
 				get: () => this.getAttribute('style')
 			});
 			Object.defineProperty(this, 'innerHTML', {
-				set: () => {
+				set: val => {
 					while (this.firstChild) {
 						this.removeChild(this.firstChild);
 					}
-				}
+					this._innerHTML = val;
+				},
+				get: () => { return this._innerHTML; }
 			});
 		}
 
@@ -116,8 +118,8 @@ export default function undom() {
 
 		insertBefore(child, ref) {
 			super.insertBefore(child, ref);
-			if (this.innerHTML) {
-				this.innerHTML = '';
+			if (this._innerHTML) {
+				this._innerHTML = '';
 			}
 		}
 
